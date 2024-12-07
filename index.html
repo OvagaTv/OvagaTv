@@ -1,301 +1,270 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <!-- Navbar -->
-    <div class="navbar">
-        <h1>Ovaga-Tv</h1>
-    </div> 
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUMON NETWORK GLOBAL</title>
-    <meta name="description" content="ENJOY FREE LIVE IPTV">
-    <meta name="keywords" content="Watch live sports streaming online, including football, basketball, baseball, hockey, and more. Stream your favorite sports teams and events in HD, with no cable subscription required.">
-    <meta name="author" content="SUMON RANA">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="shortcut icon" type="image/x-icon" href="https://i.ibb.co.com/XpXz3b1/Picsart-24-10-15-01-07-11-687.png">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.6.2/dist/plyr.css" />
-    <script src="https://cdn.jsdelivr.net/npm/plyr@3.6.12/dist/plyr.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.1.4/dist/hls.min.js"></script>
-<link rel="me" href="https://t.me/bdix_hub" />
-<meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
-<meta name='google-adsense-platform-domain' content='blogspot.com'/>
-</head>
-
-<body>
-    <!-- Custom Text Section -->
-    <div class="custom-text">
-       <header> 
-        <a href="https://sumon-network.vercel.app/"><img src="https://i.ibb.co.com/XpXz3b1/Picsart-24-10-15-01-07-11-687.png" class="responsive-img" style="width: 200px; height: auto;"></a>
-       </div>
-   
-
-    <!-- Video Player Section -->
-    <div class="video-player">
-        
-        <div id="videoLoading" class="loading">
-            <p>Loading video...</p>
-        </div>
-        <video id="videoPlayer" controls crossorigin playsinline unmuted autoplay>
-            <source id="videoSource" type="application/vnd.apple.mpegurl" src="">
-        </video>
-    </div>
-    <div class="col-md-12">
-<style> 
-.notice-movies{margin-top:3px;background:#ff0000;color:white;position:relative;padding:10px;overflow:hidden;font-family:var(--font-secondary);border-radius:7px}.notice-movies::before{content:'';position:absolute;border-left:17px solid var(--black);border-bottom:17px solid var(--black);border-top:17px solid transparent;border-right:17px solid transparent;left:98px;top:0;z-index:1}.notice-movies::after{content:'Notice:';position:absolute;height:100%;padding:0 6px;line-height:43px;background:Green;color:white;font-family:var(--font-primary);font-weight:600;left:0;top:0} </style>
-<center>
-     <marquee class="notice-movies" scrollamount="4">
-       ➤ সুমন নেটওয়ার্ককে আপনাকে স্বাগতম Welcome To Sumon Network প্রিয় গ্রাহক আপনার অবগতির জন্য জানানো যাচ্ছে যে আমাদের এই ওয়েবসাইটির কাজ চলছে তাই টিভি দেখতে কিছু চ্যানেল সমস্যা করতে পারে আমাদের এক্সপার্ট টিম বিষয়টি পর্যবেক্ষণ করছেন ধন্যবাদ....?
-     </marquee>
-</center>
-    </div>
-    
-        <div id="channelLoading" class="loading">
-            <p>Loading channels...</p>
-        </div>
-        <div class="channel-buttons" id="channelList" style="display: none;">
-            <!-- Channels will be dynamically loaded here -->
-        </div>
-    </div>
-
-    <script>
-        const video = document.getElementById('videoPlayer');
-        const videoLoading = document.getElementById('videoLoading');
-        const channelLoading = document.getElementById('channelLoading');
-        const channelList = document.getElementById('channelList');
-
-        // Display video loading animation
-        video.addEventListener('waiting', function () {
-            videoLoading.style.display = 'block';
-        });
-
-        video.addEventListener('playing', function () {
-            videoLoading.style.display = 'none';
-        });
-
-        // Load demo video when the page loads
-        document.addEventListener('DOMContentLoaded', function () {
-            const demoVideoUrl = 'https://shounwifi.net/sumonnetwork/tsports/play.php?url=https%3A%2F%2Flive-cdn.tsports.com%2Flive-03%2Fplaylist.m3u8';
-            loadVideo(demoVideoUrl);
-
-            // Fetch and load channels
-            loadChannels();
-        });
-
-        function loadVideo(sourceUrl) {
-            if (Hls.isSupported()) {
-                if (window.hls) {
-                    window.hls.destroy();
-                }
-                var hls = new Hls();
-                hls.loadSource(sourceUrl);
-                hls.attachMedia(video);
-                window.hls = hls;
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = sourceUrl;
-            }
-            video.play();
-        }
-
-        function loadChannels() {
-            // Simulate delay for loading channels
-            setTimeout(() => {
-                fetch('https://raw.githubusercontent.com/OvagaTv/OvagaTv/refs/heads/main/ndex.m3u')
-                    .then(response => response.text())
-                    .then(data => {
-                        const lines = data.split('\n');
-                        let channels = [];
-                        let currentChannel = {};
-
-                        lines.forEach(line => {
-                            if (line.startsWith('#EXTINF')) {
-                                const logoMatch = line.match(/tvg-logo="(.*?)"/);
-                                const nameMatch = line.match(/,(.*)/);
-                                if (logoMatch && nameMatch) {
-                                    currentChannel.logo = logoMatch[1];
-                                    currentChannel.name = nameMatch[1];
-                                }
-                            } else if (line.startsWith('http')) {
-                                currentChannel.url = line.trim();
-                                channels.push(currentChannel);
-                                currentChannel = {};
-                            }
-                        });
-
-                        channels.forEach(channel => {
-                            const channelButton = document.createElement('a');
-                            channelButton.href = "#";
-                            channelButton.classList.add('channel-link');
-                            channelButton.setAttribute('data-link', channel.url);
-
-                            const logoImg = document.createElement('img');
-                            logoImg.src = channel.logo;
-                            logoImg.alt = channel.name + ' Logo';
-
-                            channelButton.appendChild(logoImg);
-                            channelList.appendChild(channelButton);
-                        });
-
-                        // Display channels after loading
-                        channelLoading.style.display = 'none';
-                        channelList.style.display = 'flex';
-
-                        // Add event listeners to channel links
-                        document.querySelectorAll('.channel-link').forEach(function (link) {
-                            link.addEventListener('click', function (event) {
-                                event.preventDefault();
-                                const newSource = this.getAttribute('data-link');
-                                loadVideo(newSource);
-                            });
-                        });
-                    });
-            }, 2000); // Simulating a delay for demonstration
-        }
-    </script>
-
+    <title>SUMON-NETWORK</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #181818;
+            font-family: "Montserrat", sans-serif;
+            background-color: black;
             color: #fff;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
 
-        /* Custom Text Styling */
-        .custom-text {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .custom-text h1 {
-            font-size: 2rem;
-            color: #4CAF50;
-            background-color: #222;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-        }
-
-        .video-player {
+        .header {
+            background-color: #e50914;
             padding: 20px;
-            border-radius: 15px;
-            margin: 20px 0;
-            background-color: #1a1a1a;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-            width: 100%;
-            max-width: 900px;
             text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .search-bar {
             position: sticky;
-            top: 0;
-            z-index: 1000;
+            top: 20px;
+            z-index: 100;
+            background: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(15px);
+            border-radius: 50px;
+            padding: 0.5rem;
+            margin: 1rem auto 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 600px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
 
-        .video-player h2 {
-            background-color: #4CAF50;
+        .search-bar input {
+            background: transparent;
+            border: none;
             color: white;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-
-        .video-player video {
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
             width: 100%;
-            height: auto;
-            border-radius: 10px;
-            border: 2px solid #4CAF50;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            outline: none;
         }
 
-        .loading {
-            font-size: 18px;
+        .search-bar button {
+            background: #e50914;
             color: white;
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 10px;
-            border-radius: 10px;
-            display: block;
-            text-align: center;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-left: 0.5rem;
+        }
+
+        .search-bar button:hover {
+            background: white;
+            color: #e50914;
         }
 
         .channel-list {
-            background-color: #2b2b2b;
-            padding: 20px;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 900px;
-            text-align: center;
-        }
-
-        .channel-list h2 {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-        }
-
-        .channel-buttons {
             display: flex;
-            justify-content: space-around;
             flex-wrap: wrap;
-            margin-top: 20px;
-        }
-
-        .channel-buttons a {
-            background-color: #333;
-            width: 100px;
-            height: 100px;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            border-radius: 10px;
-            margin: 10px;
-            transition: background-color 0.3s ease;
-            text-decoration: none;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            gap: 15px;
+            margin: 20px auto;
         }
 
-        .channel-buttons a img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
+        .channel {
+            background-color: #202020;
+            color: white;
+            text-align: center;
+            border-radius: 20px 8px;
+            overflow: hidden;
+            padding: 10px;
+            width: 150px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
         }
 
-        .channel-buttons a:hover {
-            background-color: #4CAF50;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+        .channel img {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 10px;
         }
 
-        @media (max-width: 768px) {
-            .video-player,
-            .channel-list {
-                width: 100%;
-                padding: 10px;
-            }
+        .channel:hover {
+            background-color: rgba(165, 42, 42, 0.7);
+            border: 2px solid white;
+        }
 
-            .channel-buttons a {
-                width: 80px;
-                height: 80px;
-            }
-
-            .channel-buttons a img {
-                width: 60px;
-                height: 60px;
-            }
+        .channel-name {
+            font-size: 14px;
+            font-weight: 500;
         }
     </style>
-    <!-- Footer -->
-    <div class="footer">
-        <p>© 2024 OVAGA-TV. All rights reserved.</p>
-        <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
-  </div>
-    
-</body>
+</head>
+<body>
+<div class="container">
+    <!-- Logo Holder -->
+    <div class="mt-3 mb-4">
+        <img src="https://toffeelive.com/logo.svg" alt=""/>
+    </div>
+    <div class="search-bar">
+        <input type="text" id="search" placeholder="Search for channels..." oninput="filterChannels()">
+        <button>Search</button>
+    </div>
+    <div class="channel-list" id="channelList">
+                    <div class="channel" onclick="playChannel('sports_highlights')">
+                <img src="https://images.toffeelive.com/images/program/19779/logo/240x240/mobile_logo_975410001725875598.png" alt="TOFFEE Sports VIP">
+                <div class="channel-name">TOFFEE Sports VIP</div>
+            </div>
+                    <div class="channel" onclick="playChannel('toffee_movie')">
+                <img src="https://images.toffeelive.com/images/program/2708/logo/240x240/mobile_logo_724353001725875591.png" alt="TOFFEE Movies VIP">
+                <div class="channel-name">TOFFEE Movies VIP</div>
+            </div>
+                    <div class="channel" onclick="playChannel('toffee_drama')">
+                <img src="https://images.toffeelive.com/images/program/44878/logo/240x240/mobile_logo_764950001725875605.png" alt="TOFFEE Dramas VIP">
+                <div class="channel-name">TOFFEE Dramas VIP</div>
+            </div>
+                    <div class="channel" onclick="playChannel('cnn')">
+                <img src="https://images.toffeelive.com/images/program/333/logo/240x240/mobile_logo_240535001731487107.png" alt="CNN VIP">
+                <div class="channel-name">CNN VIP</div>
+            </div>
+                    <div class="channel" onclick="playChannel('euro_sports_hd')">
+                <img src="https://images.toffeelive.com/images/program/4388/logo/240x240/mobile_logo_422191001674119624.png" alt="Euro Sport HD">
+                <div class="channel-name">Euro Sport HD</div>
+            </div>
+                    <div class="channel" onclick="playChannel('sony_sports_1_hd')">
+                <img src="https://images.toffeelive.com/images/program/603/logo/240x240/mobile_logo_237244001666780563.png" alt="SONY SPORTS TEN 1 HD">
+                <div class="channel-name">SONY SPORTS TEN 1 HD</div>
+            </div>
+                    <div class="channel" onclick="playChannel('sony_sports_2_hd')">
+                <img src="https://images.toffeelive.com/images/program/604/logo/240x240/mobile_logo_093449001666780976.png" alt="SONY SPORTS TEN 2 HD">
+                <div class="channel-name">SONY SPORTS TEN 2 HD</div>
+            </div>
+                    <div class="channel" onclick="playChannel('sony_sports_5_hd')">
+                <img src="https://images.toffeelive.com/images/program/606/logo/240x240/mobile_logo_689539001672145843.png" alt="SONY SPORTS TEN 5 HD">
+                <div class="channel-name">SONY SPORTS TEN 5 HD</div>
+            </div>
+                    <div class="channel" onclick="playChannel('cartoon_network_hd')">
+                <img src="https://images.toffeelive.com/images/program/26942/logo/240x240/mobile_logo_443429001678950505.png" alt="Cartoon Network HD">
+                <div class="channel-name">Cartoon Network HD</div>
+            </div>
+                    <div class="channel" onclick="playChannel('cartoon_network_sd')">
+                <img src="https://images.toffeelive.com/images/program/27232/logo/240x240/mobile_logo_320294001679201065.png" alt="Cartoon Network">
+                <div class="channel-name">Cartoon Network</div>
+            </div>
+                    <div class="channel" onclick="playChannel('pogo_sd')">
+                <img src="https://images.toffeelive.com/images/program/27159/logo/240x240/mobile_logo_740957001679201029.png" alt="Pogo">
+                <div class="channel-name">Pogo</div>
+            </div>
+                    <div class="channel" onclick="playChannel('discovery_kids')">
+                <img src="https://images.toffeelive.com/images/program/611/logo/240x240/mobile_logo_430542001673177743.png" alt="Discovery Kids">
+                <div class="channel-name">Discovery Kids</div>
+            </div>
+                    <div class="channel" onclick="playChannel('sonyyay')">
+                <img src="https://images.toffeelive.com/images/program/612/logo/240x240/mobile_logo_091186001666784752.png" alt="SONY YAY VIP">
+                <div class="channel-name">SONY YAY VIP</div>
+            </div>
+                    <div class="channel" onclick="playChannel('sonyaath')">
+                <img src="https://images.toffeelive.com/images/program/343/logo/240x240/mobile_logo_496322001666780228.png" alt="Sony Aat VIP">
+                <div class="channel-name">Sony Aat VIP</div>
+            </div>
+                    <div class="channel" onclick="playChannel('sonyentertainmnt_hd')">
+                <img src="https://images.toffeelive.com/images/program/602/logo/240x240/mobile_logo_495351001666780441.png" alt="SONY ENTERTAINMENT TELEVISION HD VIP">
+                <div class="channel-name">SONY ENTERTAINMENT TELEVISION HD VIP</div>
+            </div>
+                    <div class="channel" onclick="playChannel('sony_entertainment')">
+                <img src="https://images.toffeelive.com/images/program/57/logo/240x240/mobile_logo_149299001666780350.png" alt="SONY ENTERTAINMENT TELEVISION">
+                <div class="channel-name">SONY ENTERTAINMENT TELEVISION</div>
+            </div>
+                    <div class="channel" onclick="playChannel('b4u_music')">
+                <img src="https://images.toffeelive.com/images/program/367/logo/115x115/mobile_logo_886909001563629905.png" alt="B4U Music VIP">
+                <div class="channel-name">B4U Music VIP</div>
+            </div>
+                    <div class="channel" onclick="playChannel('sonysab_hd')">
+                <img src="https://images.toffeelive.com/images/program/2420/logo/240x240/mobile_logo_688156001666785674.png" alt="SONY SAB HD VIP">
+                <div class="channel-name">SONY SAB HD VIP</div>
+            </div>
+                    <div class="channel" onclick="playChannel('sony_max_hd')">
+                <img src="https://images.toffeelive.com/images/program/641/logo/240x240/mobile_logo_440775001666782769.png" alt="SONY MAX HD VIP">
+                <div class="channel-name">SONY MAX HD VIP</div>
+            </div>
+                    <div class="channel" onclick="playChannel('sony_max')">
+                <img src="https://images.toffeelive.com/images/program/352/logo/240x240/mobile_logo_612341001666782969.png" alt="SONY MAX VIP">
+                <div class="channel-name">SONY MAX VIP</div>
+            </div>
+                    <div class="channel" onclick="playChannel('sonypix_hd')">
+                <img src="https://images.toffeelive.com/images/program/2419/logo/240x240/mobile_logo_287412001666784602.png" alt="SONY PIX HD VIP">
+                <div class="channel-name">SONY PIX HD VIP</div>
+            </div>
+                    <div class="channel" onclick="playChannel('b4u_movies')">
+                <img src="https://images.toffeelive.com/images/program/366/logo/240x240/mobile_logo_702115001663003759.png" alt="B4U Movies VIP">
+                <div class="channel-name">B4U Movies VIP</div>
+            </div>
+                    <div class="channel" onclick="playChannel('sonymax_2')">
+                <img src="https://images.toffeelive.com/images/program/353/logo/240x240/mobile_logo_044841001666779831.png" alt="SONY MAX 2 VIP">
+                <div class="channel-name">SONY MAX 2 VIP</div>
+            </div>
+                    <div class="channel" onclick="playChannel('tlc_hd')">
+                <img src="https://images.toffeelive.com/images/program/608/logo/240x240/mobile_logo_648826001673178929.png" alt="TLC HD">
+                <div class="channel-name">TLC HD</div>
+            </div>
+                    <div class="channel" onclick="playChannel('tlc_sd')">
+                <img src="https://images.toffeelive.com/images/program/358/logo/240x240/mobile_logo_048875001673178985.png" alt="TLC">
+                <div class="channel-name">TLC</div>
+            </div>
+                    <div class="channel" onclick="playChannel('animal_planet_sd')">
+                <img src="https://images.toffeelive.com/images/program/359/logo/240x240/mobile_logo_835681001673175607.png" alt="Animal Planet">
+                <div class="channel-name">Animal Planet</div>
+            </div>
+                    <div class="channel" onclick="playChannel('animal_planet_hd')">
+                <img src="https://images.toffeelive.com/images/program/18096/logo/240x240/mobile_logo_032001001673194753.png" alt="Animal Planet HD">
+                <div class="channel-name">Animal Planet HD</div>
+            </div>
+                    <div class="channel" onclick="playChannel('sonybbc_earth_hd')">
+                <img src="https://images.toffeelive.com/images/program/670/logo/240x240/mobile_logo_330023001731294257.png" alt="SONY BBC EARTH HD VIP">
+                <div class="channel-name">SONY BBC EARTH HD VIP</div>
+            </div>
+                    <div class="channel" onclick="playChannel('discovery_hd')">
+                <img src="https://images.toffeelive.com/images/program/18093/logo/240x240/mobile_logo_868363001673181438.png" alt="Discovery HD">
+                <div class="channel-name">Discovery HD</div>
+            </div>
+                    <div class="channel" onclick="playChannel('discovery_sd')">
+                <img src="https://images.toffeelive.com/images/program/18097/logo/240x240/mobile_logo_297723001673195119.png" alt="Discovery">
+                <div class="channel-name">Discovery</div>
+            </div>
+                    <div class="channel" onclick="playChannel('discovery_science')">
+                <img src="https://images.toffeelive.com/images/program/378/logo/240x240/mobile_logo_604754001673177502.png" alt="Discovery Science">
+                <div class="channel-name">Discovery Science</div>
+            </div>
+                    <div class="channel" onclick="playChannel('discovery_turbo')">
+                <img src="https://images.toffeelive.com/images/program/379/logo/240x240/mobile_logo_775127001673177876.png" alt="Discovery Turbo">
+                <div class="channel-name">Discovery Turbo</div>
+            </div>
+                    <div class="channel" onclick="playChannel('discovary_investigation_hd')">
+                <img src="https://images.toffeelive.com/images/program/18094/logo/240x240/mobile_logo_154805001673178308.png" alt="Investigation Discovery HD">
+                <div class="channel-name">Investigation Discovery HD</div>
+            </div>
+            </div>
+</div>
+<script>
+    // Filter channels
+    function filterChannels() {
+        const searchQuery = document.getElementById('search').value.toLowerCase();
+        const channels = document.querySelectorAll('.channel');
+        channels.forEach(channel => {
+            const name = channel.querySelector('.channel-name').textContent.toLowerCase();
+            channel.style.display = name.includes(searchQuery) ? 'block' : 'none';
+        });
+    }
 
+    // Navigate to player page
+    function playChannel(id) {
+        window.location.href = `player.php?id=${id}`;
+    }
+</script>
+</body>
 </html>
