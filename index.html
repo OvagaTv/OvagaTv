@@ -3,268 +3,331 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUMON-NETWORK</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
+    <title>Channel Preview</title>
     <style>
-        body {
-            font-family: "Montserrat", sans-serif;
-            background-color: black;
-            color: #fff;
-            margin: 0;
-            padding: 0;
-        }
-
-        .header {
-            background-color: #e50914;
-            padding: 20px;
-            text-align: center;
-            font-size: 30px;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-
-        .search-bar {
-            position: sticky;
-            top: 20px;
-            z-index: 100;
-            background: rgba(30, 30, 30, 0.8);
-            backdrop-filter: blur(15px);
-            border-radius: 50px;
-            padding: 0.5rem;
-            margin: 1rem auto 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 600px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .search-bar input {
-            background: transparent;
-            border: none;
-            color: white;
-            font-size: 1rem;
-            padding: 0.5rem 1rem;
-            width: 100%;
-            outline: none;
-        }
-
-        .search-bar button {
-            background: #e50914;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            margin-left: 0.5rem;
-        }
-
-        .search-bar button:hover {
-            background: white;
-            color: #e50914;
-        }
-
-        .channel-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px auto;
-        }
-
-        .channel {
-            background-color: #202020;
-            color: white;
-            text-align: center;
-            border-radius: 20px 8px;
-            overflow: hidden;
-            padding: 10px;
-            width: 150px;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .channel img {
-            width: 100%;
-            border-radius: 15px;
-            margin-bottom: 10px;
-        }
-
-        .channel:hover {
-            background-color: rgba(165, 42, 42, 0.7);
-            border: 2px solid white;
-        }
-
-        .channel-name {
-            font-size: 14px;
-            font-weight: 500;
-        }
+        /* Reset default margin and padding */ * { margin: 0; padding: 0; box-sizing: border-box; } /* Body styles for background and fonts */ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f0f0; /* Light gray background */ }
+/* Header styles */ header { background-color: #333; /* Dark background for header */ color: yellow; /* Yellow text color */ padding: 10px; display: flex; align-items: center; justify-content: space-between; }
+/* Logo styles */ .logo { max-width: 40px; /* Adjusted size for the logo */ height: auto; margin-left: auto; /* Move logo to the right */ }
+/* Title styles */ .title-container { display: flex; align-items: center; }
+.title { font-size: 28px; /* Default font size */ margin-left: 10px; /* Adjust margin as needed */ margin-right: 10px; }
+/* Playlist text styles */ .playlist-text { font-size: 18px; /* Adjust font size as needed */ color: white; /* White text color */ background-color: #4CAF50; /* Green background for playlist text */ padding: 5px 10px; /* Adjust padding as needed */ border-radius: 5px; /* Rounded corners */ cursor: pointer; /* Change cursor to pointer on hover */ }
+.playlist-text:hover { text-decoration: none; /* Underline text on hover */ }
+/* Playlist icon styles */ .playlist-icon { font-size: 24px; color: white; /* White icon color */ cursor: pointer; }
+/* Container styles */ .container { max-width: 900px; margin: 20px auto; background-color: #fff; /* White background */ padding: 20px; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+/* Channel list styles */ ul { list-style-type: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+li { background-color: #e6e6e6; /* Lighter gray background for each channel */ padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
+li a { display: block; text-decoration: none; color: #333; /* Dark text */ }
+li a:hover { text-decoration: underline; }
+img { max-width: 100%; height: auto; margin-bottom: 10px; }
+h2 { margin-bottom: 20px; text-align: center; color: #333; /* Dark text */ }
+/* Responsive adjustments */ @media (max-width: 768px) { .container { padding: 10px; } ul { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); } }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- Logo Holder -->
-    <div class="mt-3 mb-4">
-        <img src="https://toffeelive.com/logo.svg" alt=""/>
-    </div>
-    <div class="search-bar">
-        <input type="text" id="search" placeholder="Search for channels..." oninput="filterChannels()">
-        <button>Search</button>
-    </div>
-    <div class="channel-list" id="channelList">
-                    <div class="channel" onclick="playChannel('sports_highlights')">
-                <img src="https://images.toffeelive.com/images/program/19779/logo/240x240/mobile_logo_975410001725875598.png" alt="TOFFEE Sports VIP">
-                <div class="channel-name">TOFFEE Sports VIP</div>
-                    </div>
-                    <div class="channel" onclick="playChannel('toffee_movie')">
-                <img src="https://images.toffeelive.com/images/program/2708/logo/240x240/mobile_logo_724353001725875591.png" alt="TOFFEE Movies VIP">
-                <div class="channel-name">TOFFEE Movies VIP</div>
-            </div>
-                    <div class="channel" onclick="playChannel('toffee_drama')">
-                <img src="https://images.toffeelive.com/images/program/44878/logo/240x240/mobile_logo_764950001725875605.png" alt="TOFFEE Dramas VIP">
-                <div class="channel-name">TOFFEE Dramas VIP</div>
-            </div>
-                    <div class="channel" onclick="playChannel('cnn')">
-                <img src="https://images.toffeelive.com/images/program/333/logo/240x240/mobile_logo_240535001731487107.png" alt="CNN VIP">
-                <div class="channel-name">CNN VIP</div>
-            </div>
-                    <div class="channel" onclick="playChannel('euro_sports_hd')">
-                <img src="https://images.toffeelive.com/images/program/4388/logo/240x240/mobile_logo_422191001674119624.png" alt="Euro Sport HD">
-                <div class="channel-name">Euro Sport HD</div>
-            </div>
-                    <div class="channel" onclick="playChannel('sony_sports_1_hd')">
-                <img src="https://images.toffeelive.com/images/program/603/logo/240x240/mobile_logo_237244001666780563.png" alt="SONY SPORTS TEN 1 HD">
-                <div class="channel-name">SONY SPORTS TEN 1 HD</div>
-            </div>
-                    <div class="channel" onclick="playChannel('sony_sports_2_hd')">
-                <img src="https://images.toffeelive.com/images/program/604/logo/240x240/mobile_logo_093449001666780976.png" alt="SONY SPORTS TEN 2 HD">
-                <div class="channel-name">SONY SPORTS TEN 2 HD</div>
-            </div>
-                    <div class="channel" onclick="playChannel('sony_sports_5_hd')">
-                <img src="https://images.toffeelive.com/images/program/606/logo/240x240/mobile_logo_689539001672145843.png" alt="SONY SPORTS TEN 5 HD">
-                <div class="channel-name">SONY SPORTS TEN 5 HD</div>
-            </div>
-                    <div class="channel" onclick="playChannel('cartoon_network_hd')">
-                <img src="https://images.toffeelive.com/images/program/26942/logo/240x240/mobile_logo_443429001678950505.png" alt="Cartoon Network HD">
-                <div class="channel-name">Cartoon Network HD</div>
-            </div>
-                    <div class="channel" onclick="playChannel('cartoon_network_sd')">
-                <img src="https://images.toffeelive.com/images/program/27232/logo/240x240/mobile_logo_320294001679201065.png" alt="Cartoon Network">
-                <div class="channel-name">Cartoon Network</div>
-            </div>
-                    <div class="channel" onclick="playChannel('pogo_sd')">
-                <img src="https://images.toffeelive.com/images/program/27159/logo/240x240/mobile_logo_740957001679201029.png" alt="Pogo">
-                <div class="channel-name">Pogo</div>
-            </div>
-                    <div class="channel" onclick="playChannel('discovery_kids')">
-                <img src="https://images.toffeelive.com/images/program/611/logo/240x240/mobile_logo_430542001673177743.png" alt="Discovery Kids">
-                <div class="channel-name">Discovery Kids</div>
-            </div>
-                    <div class="channel" onclick="playChannel('sonyyay')">
-                <img src="https://images.toffeelive.com/images/program/612/logo/240x240/mobile_logo_091186001666784752.png" alt="SONY YAY VIP">
-                <div class="channel-name">SONY YAY VIP</div>
-            </div>
-                    <div class="channel" onclick="playChannel('sonyaath')">
-                <img src="https://images.toffeelive.com/images/program/343/logo/240x240/mobile_logo_496322001666780228.png" alt="Sony Aat VIP">
-                <div class="channel-name">Sony Aat VIP</div>
-            </div>
-                    <div class="channel" onclick="playChannel('sonyentertainmnt_hd')">
-                <img src="https://images.toffeelive.com/images/program/602/logo/240x240/mobile_logo_495351001666780441.png" alt="SONY ENTERTAINMENT TELEVISION HD VIP">
-                <div class="channel-name">SONY ENTERTAINMENT TELEVISION HD VIP</div>
-            </div>
-                    <div class="channel" onclick="playChannel('sony_entertainment')">
-                <img src="https://images.toffeelive.com/images/program/57/logo/240x240/mobile_logo_149299001666780350.png" alt="SONY ENTERTAINMENT TELEVISION">
-                <div class="channel-name">SONY ENTERTAINMENT TELEVISION</div>
-            </div>
-                    <div class="channel" onclick="playChannel('b4u_music')">
-                <img src="https://images.toffeelive.com/images/program/367/logo/115x115/mobile_logo_886909001563629905.png" alt="B4U Music VIP">
-                <div class="channel-name">B4U Music VIP</div>
-            </div>
-                    <div class="channel" onclick="playChannel('sonysab_hd')">
-                <img src="https://images.toffeelive.com/images/program/2420/logo/240x240/mobile_logo_688156001666785674.png" alt="SONY SAB HD VIP">
-                <div class="channel-name">SONY SAB HD VIP</div>
-            </div>
-                    <div class="channel" onclick="playChannel('sony_max_hd')">
-                <img src="https://images.toffeelive.com/images/program/641/logo/240x240/mobile_logo_440775001666782769.png" alt="SONY MAX HD VIP">
-                <div class="channel-name">SONY MAX HD VIP</div>
-            </div>
-                    <div class="channel" onclick="playChannel('sony_max')">
-                <img src="https://images.toffeelive.com/images/program/352/logo/240x240/mobile_logo_612341001666782969.png" alt="SONY MAX VIP">
-                <div class="channel-name">SONY MAX VIP</div>
-            </div>
-                    <div class="channel" onclick="playChannel('sonypix_hd')">
-                <img src="https://images.toffeelive.com/images/program/2419/logo/240x240/mobile_logo_287412001666784602.png" alt="SONY PIX HD VIP">
-                <div class="channel-name">SONY PIX HD VIP</div>
-            </div>
-                    <div class="channel" onclick="playChannel('b4u_movies')">
-                <img src="https://images.toffeelive.com/images/program/366/logo/240x240/mobile_logo_702115001663003759.png" alt="B4U Movies VIP">
-                <div class="channel-name">B4U Movies VIP</div>
-            </div>
-                    <div class="channel" onclick="playChannel('sonymax_2')">
-                <img src="https://images.toffeelive.com/images/program/353/logo/240x240/mobile_logo_044841001666779831.png" alt="SONY MAX 2 VIP">
-                <div class="channel-name">SONY MAX 2 VIP</div>
-            </div>
-                    <div class="channel" onclick="playChannel('tlc_hd')">
-                <img src="https://images.toffeelive.com/images/program/608/logo/240x240/mobile_logo_648826001673178929.png" alt="TLC HD">
-                <div class="channel-name">TLC HD</div>
-            </div>
-                    <div class="channel" onclick="playChannel('tlc_sd')">
-                <img src="https://images.toffeelive.com/images/program/358/logo/240x240/mobile_logo_048875001673178985.png" alt="TLC">
-                <div class="channel-name">TLC</div>
-            </div>
-                    <div class="channel" onclick="playChannel('animal_planet_sd')">
-                <img src="https://images.toffeelive.com/images/program/359/logo/240x240/mobile_logo_835681001673175607.png" alt="Animal Planet">
-                <div class="channel-name">Animal Planet</div>
-            </div>
-                    <div class="channel" onclick="playChannel('animal_planet_hd')">
-                <img src="https://images.toffeelive.com/images/program/18096/logo/240x240/mobile_logo_032001001673194753.png" alt="Animal Planet HD">
-                <div class="channel-name">Animal Planet HD</div>
-            </div>
-                    <div class="channel" onclick="playChannel('sonybbc_earth_hd')">
-                <img src="https://images.toffeelive.com/images/program/670/logo/240x240/mobile_logo_330023001731294257.png" alt="SONY BBC EARTH HD VIP">
-                <div class="channel-name">SONY BBC EARTH HD VIP</div>
-            </div>
-                    <div class="channel" onclick="playChannel('discovery_hd')">
-                <img src="https://images.toffeelive.com/images/program/18093/logo/240x240/mobile_logo_868363001673181438.png" alt="Discovery HD">
-                <div class="channel-name">Discovery HD</div>
-            </div>
-                    <div class="channel" onclick="playChannel('discovery_sd')">
-                <img src="https://images.toffeelive.com/images/program/18097/logo/240x240/mobile_logo_297723001673195119.png" alt="Discovery">
-                <div class="channel-name">Discovery</div>
-            </div>
-                    <div class="channel" onclick="playChannel('discovery_science')">
-                <img src="https://images.toffeelive.com/images/program/378/logo/240x240/mobile_logo_604754001673177502.png" alt="Discovery Science">
-                <div class="channel-name">Discovery Science</div>
-            </div>
-                    <div class="channel" onclick="playChannel('discovery_turbo')">
-                <img src="https://images.toffeelive.com/images/program/379/logo/240x240/mobile_logo_775127001673177876.png" alt="Discovery Turbo">
-                <div class="channel-name">Discovery Turbo</div>
-            </div>
-                    <div class="channel" onclick="playChannel('discovary_investigation_hd')">
-                <img src="https://images.toffeelive.com/images/program/18094/logo/240x240/mobile_logo_154805001673178308.png" alt="Investigation Discovery HD">
-                <div class="channel-name">Investigation Discovery HD</div>
-            </div>
-            </div>
-</div>
-<script>
-    // Filter channels
-    function filterChannels() {
-        const searchQuery = document.getElementById('search').value.toLowerCase();
-        const channels = document.querySelectorAll('.channel');
-        channels.forEach(channel => {
-            const name = channel.querySelector('.channel-name').textContent.toLowerCase();
-            channel.style.display = name.includes(searchQuery) ? 'block' : 'none';
-        });
-    }
-
-    // Navigate to player page
-    function playChannel(id) {
-        window.location.href = `player.php?id=${id}`;
-    }
-</script>
-</body>
-</html>
+    <h2>Jagobd Live </h2>
+    <ul>
+                                    <li>
+                    <a href="play.php?id=aljazeera.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2019/09/AljazeeraTV.jpg" alt="Logo of Al Jazeera">
+                    </a>
+                    <strong>Al Jazeera</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=anandatv.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2018/04/Anandatvupdate.jpg?x67896" alt="Logo of Ananda TV">
+                    </a>
+                    <strong>Ananda TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=asian-test-sample-ok-d.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2015/12/asiantv.jpg?x67896" alt="Logo of Asian TV">
+                    </a>
+                    <strong>Asian TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=atnbd-8-org.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2015/12/atn-bangla1-150x150.jpg" alt="Logo of ATN Bangla">
+                    </a>
+                    <strong>ATN Bangla</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=atnbanglauk-off.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2017/01/atnbanglauk11-150x150.jpg" alt="Logo of ATN Bangla UK">
+                    </a>
+                    <strong>ATN Bangla UK</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=atnislamictv.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2016/02/atnislamictv.jpg?x67896" alt="Logo of ATN Islamic">
+                    </a>
+                    <strong>ATN Islamic</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=atnmusic.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2015/12/atnmusic.jpg?x67896" alt="Logo of ATN Music">
+                    </a>
+                    <strong>ATN Music</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=atnws-sg.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2016/08/atn-news.jpg?x67896" alt="Logo of ATN News">
+                    </a>
+                    <strong>ATN News</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=azantv.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2019/04/azantvs.jpg" alt="Logo of Azan TV">
+                    </a>
+                    <strong>Azan TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=b24c.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2023/01/b24c-1.jpeg" alt="Logo of B24C TV">
+                    </a>
+                    <strong>B24C TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=bangla21tv000889956-sg.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2016/02/bangla21tv.jpg?x67896" alt="Logo of Bangla21 TV">
+                    </a>
+                    <strong>Bangla21 TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=banglav000.stream" target="_blank">
+                        <img src="https://images.toffeelive.com/images/program/337/logo/240x240/mobile_logo_519481001656610377.png" alt="Logo of Bangla Vision">
+                    </a>
+                    <strong>Bangla Vision</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=bijoy00.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2016/02/bijoytv.jpg" alt="Logo of Bijoy Bangla">
+                    </a>
+                    <strong>Bijoy Bangla</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=biswabanglatv.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2022/03/Logo-Still.png" alt="Logo of Biswa Bangla">
+                    </a>
+                    <strong>Biswa Bangla</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=boishakhitv-org.stream" target="_blank">
+                        <img src="https://images.toffeelive.com/images/program/236/logo/240x240/mobile_logo_341242001655891063.png" alt="Logo of Boishakhi TV">
+                    </a>
+                    <strong>Boishakhi TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=btvnational-ctg.stream" target="_blank">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpCja5QD265KY9EXBT5pEFD-DLBuexB-T68Olr8aHLrzvGzCT4yjU1PyjW7TJMfJIGgj0&amp;usqp=CAU" alt="Logo of BTV Chittagong">
+                    </a>
+                    <strong>BTV Chittagong</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=btv-local-sg-220-org.stream" target="_blank">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRb7QvpNrd2INV2mEu9xmdVtIXUNVNlDIcahA&amp;usqp=CAU" alt="Logo of BTV National">
+                    </a>
+                    <strong>BTV National</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=btv-local-sg-220-org.stream" target="_blank">
+                        <img src="https://images.toffeelive.com/images/program/1/logo/240x240/mobile_logo_310000001673183767.png" alt="Logo of BTV World">
+                    </a>
+                    <strong>BTV World</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=cb24.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2024/01/CB24-PP-LOGO.png" alt="Logo of CB TV">
+                    </a>
+                    <strong>CB TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=cgtn.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2022/10/CGTN.png" alt="Logo of CGTN">
+                    </a>
+                    <strong>CGTN</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=cgtndoc.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2022/10/CGTN_Doc-150x150.png" alt="Logo of CGTN Documentory">
+                    </a>
+                    <strong>CGTN Documentory</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=channel24-sg-e8e.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2016/02/channel24.jpg?x67896" alt="Logo of Channel 24">
+                    </a>
+                    <strong>Channel 24</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=channel9hd.stream" target="_blank">
+                        <img src="https://images.toffeelive.com/images/program/9/logo/240x240/mobile_logo_363996001656610763.png" alt="Logo of Channel 9">
+                    </a>
+                    <strong>Channel 9</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=cha1.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2024/09/IMG_0459-1536x1536.png" alt="Logo of Channel A1">
+                    </a>
+                    <strong>Channel A1</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=channeleurope.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2022/12/cheu.png" alt="Logo of Channel Europe">
+                    </a>
+                    <strong>Channel Europe</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=channels.stream" target="_blank">
+                        <img src="https://i.postimg.cc/ydsN3N8v/Screenshot-20241115-125106-Gallery.jpg" alt="Logo of Channel S BD">
+                    </a>
+                    <strong>Channel S BD</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=chsukoff.stream" target="_blank">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_OoBST8IOU0i5yAcgEoz9tu5dJuroeMwiXg&amp;s" alt="Logo of Channel S UK">
+                    </a>
+                    <strong>Channel S UK</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=channeli-8-org.stream" target="_blank">
+                        <img src="https://images.toffeelive.com/images/program/3/logo/240x240/mobile_logo_694865001655890816.png" alt="Logo of Channel I">
+                    </a>
+                    <strong>Channel I</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=colosal.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2020/05/colosaltvhd.jpg" alt="Logo of Colosal TV">
+                    </a>
+                    <strong>Colosal TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=cumilla24bd.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2020/05/Cumilla24.jpeg" alt="Logo of Cumilla 24">
+                    </a>
+                    <strong>Cumilla 24</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=dbcnews.stream" target="_blank">
+                        <img src="https://images.toffeelive.com/images/program/335/logo/240x240/mobile_logo_946452001655891077.png" alt="Logo of DBC News">
+                    </a>
+                    <strong>DBC News</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=deentv.stream" target="_blank">
+                        <img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQ3fDcreCeXjhxCqux_4VofmXttkdGSryc8nvg85q_OUD0RoV2k" alt="Logo of Deen TV UK">
+                    </a>
+                    <strong>Deen TV UK</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=deeptotv.stream" target="_blank">
+                        <img src="https://i.ibb.co/kqF2kdy/20240826-230650.png" alt="Logo of Deepto TV">
+                    </a>
+                    <strong>Deepto TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=deshtv.stream" target="_blank">
+                        <img src="https://images.toffeelive.com/images/program/39/logo/240x240/mobile_logo_569553001668421527.png" alt="Logo of Desh TV">
+                    </a>
+                    <strong>Desh TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=eshebideshe.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2016/08/deshebideshe-1.jpg" alt="Logo of Deshe Bideshe TV">
+                    </a>
+                    <strong>Deshe Bideshe TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=dimtv.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2024/10/dim.png" alt="Logo of DIM TV">
+                    </a>
+                    <strong>DIM TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=discoverpakistan.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2024/09/discoverpakistan-150x150.jpg" alt="Logo of Discovery Pakistan">
+                    </a>
+                    <strong>Discovery Pakistan</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=dwnews.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2019/07/dwnews.jpg" alt="Logo of DW News">
+                    </a>
+                    <strong>DW News</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=ekattor.stream" target="_blank">
+                        <img src="https://images.toffeelive.com/images/program/53/logo/240x240/mobile_logo_107276001655890949.png" alt="Logo of Ekattor TV">
+                    </a>
+                    <strong>Ekattor TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=globaltv.stream" target="_blank">
+                        <img src="https://yt3.googleusercontent.com/X8QfZ4BYslnM3433FPXkEV2ncYWUnsmZSRDFafcoApy5OZQrkOYqkSvCTaaOJE5AQgpTuF8I7sM=s176-c-k-c0x00ffffff-no-rj-mo" alt="Logo of Ekhon TV">
+                    </a>
+                    <strong>Ekhon TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=ekusheytv-8-org.stream" target="_blank">
+                        <img src="https://i.ibb.co/zPFbF67/20240826-230349.png" alt="Logo of Ekushey TV">
+                    </a>
+                    <strong>Ekushey TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=esatv.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2024/11/ESA_Patch_2022.png" alt="Logo of ESA TV">
+                    </a>
+                    <strong>ESA TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=falgunitv.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2024/10/falgunitv.jpg" alt="Logo of Falguni TV">
+                    </a>
+                    <strong>Falguni TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=fr24.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2019/07/francenews24.jpg" alt="Logo of France 24 News">
+                    </a>
+                    <strong>France 24 News</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=uatv.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2019/09/freedom.jpg" alt="Logo of Freedom">
+                    </a>
+                    <strong>Freedom</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=gaanbangla-8-orgd.stream" target="_blank">
+                        <img src="https://i.ibb.co/L6V3Gsh/20240802-204557.png" alt="Logo of Gaan Bangla">
+                    </a>
+                    <strong>Gaan Bangla</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=gazibd.stream" target="_blank">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUbugKXrnnrbxbUjiDRQDE0Pl8cCSxfnt1a3Y6IEmXbqNozYPMucRt8wdTzQWGGSjLEAQ&amp;usqp=CAU" alt="Logo of Gazi TV">
+                    </a>
+                    <strong>Gazi TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=Global-tv.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2021/11/globaltv.jpg" alt="Logo of Global TV">
+                    </a>
+                    <strong>Global TV</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=ibtvus.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2024/09/ibtv.jpg" alt="Logo of IB TV US">
+                    </a>
+                    <strong>IB TV US</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=amarbanglatv.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2022/07/Aamar-Bangla-150x150.jpg" alt="Logo of Amar Bangla">
+                    </a>
+                    <strong>Amar Bangla</strong>
+                </li>
+                            <li>
+                    <a href="play.php?id=amardigital.stream" target="_blank">
+                        <img src="https://www.jagobd.com/wp-content/uploads/2024/09/amardigital-1-150x150.jpg" alt="Logo of Amar Digital">
+                    <
