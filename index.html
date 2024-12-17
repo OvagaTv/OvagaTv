@@ -166,7 +166,7 @@
       </div>
       <!-- Video Player Section -->
     <div class="video-player">
-           <img alt="SMART TV LIVE Logo" onclick="exitPlayer()" src="https://i.imgur.com/G7SqmB8.png" style="cursor: pointer; height: auto; position: absolute; right: 12px; top: 129px; width: 41px; z-index: 10;" />
+           <img alt="OVAGA TV VIP Logo" onclick="exitPlayer()" src="https://imgur.com/a/VDMP5Fm" style="cursor: pointer; height: auto; position: absolute; right: 12px; top: 129px; width: 41px; z-index: 10;" />
         <video autoplay="" controls="" crossorigin="" id="videoPlayer" playsinline="" unmuted="">
             <source id="videoSource" src="" type="application/vnd.apple.mpegurl"></source>
         </video>
@@ -230,7 +230,7 @@
         function loadChannels() {
             // Simulate delay for loading channels
             setTimeout(() => {
-                 fetch('https://raw.githubusercontent.com/alex4528/m3u/main/tata-8d.m3u')     .then(response => response.text())
+                 fetch('https://raw.githubusercontent.com/OvagaTv/OvagaTv/refs/heads/main/Jadoo_Online_SumonNetwork')     .then(response => response.text())
                     .then(data => {
                         const lines = data.split('\n');
                         let channels = [];
