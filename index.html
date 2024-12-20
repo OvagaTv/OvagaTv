@@ -229,7 +229,7 @@
         function loadChannels() {
             // Simulate delay for loading channels
             setTimeout(() => {
-                 fetch('https://aynaott-join-telegram-liveiptvfree.vercel.app/api/aynaott/play.m3u8')     .then(response => response.text())
+                 fetch('https://raw.githubusercontent.com/byte-capsule/Toffee-Channels-Link-Headers/refs/heads/main/toffee_channel_data.json')     .then(response => response.text())
                     .then(data => {
                         const lines = data.split('\n');
                         let channels = [];
